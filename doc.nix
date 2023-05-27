@@ -19,7 +19,7 @@
             description = "The devices to set up";
           };
         };
-        options.types =
+        options.content =
           lib.mapAttrs'
           (
             name: value:
@@ -33,7 +33,23 @@
                 }
               )
           )
-          diskoLib.types;
+          (
+            lib.filterAttrs
+            (
+              name: value:
+                builtins.elem name [
+                  "btrfs"
+                  "filesystem"
+                  "luks"
+                  "lvm_pv"
+                  "mdraid"
+                  "swap"
+                  "table"
+                  "zfs"
+                ]
+            )
+            diskoLib.types
+          );
       }
     ];
   };

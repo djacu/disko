@@ -50,6 +50,31 @@
             )
             diskoLib.types
           );
+        options.datasets =
+          lib.mapAttrs'
+          (
+            name: value:
+              lib.nameValuePair
+              name
+              (
+                lib.mkOption {
+                  type = value;
+                  default = {};
+                  description = value.description;
+                }
+              )
+          )
+          (
+            lib.filterAttrs
+            (
+              name: value:
+                builtins.elem name [
+                  "zfs_fs"
+                  "zfs_volume"
+                ]
+            )
+            diskoLib.types
+          );
       }
     ];
   };

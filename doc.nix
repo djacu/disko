@@ -19,6 +19,21 @@
             description = "The devices to set up";
           };
         };
+        options.types =
+          lib.mapAttrs'
+          (
+            name: value:
+              lib.nameValuePair
+              name
+              (
+                lib.mkOption {
+                  type = value;
+                  default = {};
+                  description = value.description;
+                }
+              )
+          )
+          diskoLib.types;
       }
     ];
   };

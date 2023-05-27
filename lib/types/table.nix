@@ -44,9 +44,14 @@
             description = "End of the partition";
           };
           index = lib.mkOption {
-            type = lib.types.int;
+            type = lib.types.nullOr lib.types.int;
             # TODO find a better way to get the index
-            default = lib.toInt (lib.head (builtins.match ".*entry ([[:digit:]]+)]" config._module.args.name));
+            default = let
+              possibleMatch = builtins.match ".*entry ([[:digit:]]+)]" config._module.args.name;
+            in
+              if builtins.isNull possibleMatch
+              then null
+              else lib.toInt (lib.head possibleMatch);
             description = "Index of the partition";
           };
           flags = lib.mkOption {
